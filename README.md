@@ -22,4 +22,4 @@ To check the versions, please execute
 ## Releasing
 
 Use GitHub Actions to release a new image to https://gallery.ecr.aws/ds/cypress-jdk-maven.
-The release action should trigger immediatelly after pushing a new tag.
+The release action should trigger immediatelly after pushing a new tag with a `[0-9].[0-9].[0.9]` pattern.
