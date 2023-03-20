@@ -1,20 +1,6 @@
 # Cypress with Node & JDK & Maven
 
-A image based on [cypress/browsers:node16.5.0-chrome97-ff96](https://github.com/cypress-io/cypress-docker-images/tree/master/browsers/node16.5.0-chrome97-ff96) with all operating system dependencies for Cypress, Chrome 94 and Firefox 93 browsers. It contains also JDK 17 & Maven to run tests using [frontend-maven-plugin](https://github.com/eirslett/frontend-maven-plugin). It is designed to run in CI (BitBucket Pipelines) as the base image for steps that require all of the installed technologies.
-
-## Content
-```
- node version:    v16.14.0 
- npm version:     8.3.1 
- yarn version:    1.22.17 
- debian version:  11.2 
- Chrome version:  Google Chrome 99.0.4844.51  
- Firefox version: Mozilla Firefox 97.0.1 
- git version:     git version 2.30.2 
- JDK version:     openjdk 17.0.4 2022-07-19
- Maven version:   Apache Maven 3.8.6 (84538c9988a25aec085021c365c560670ad80f63)
- AWS CLI:         aws-cli/2.9.0
-```
+A image based on [cypress/browsers](https://hub.docker.com/r/cypress/browsers/tags) with all operating system dependencies for Cypress, Chrome, Firefox and Edge browsers. It contains also JDK 17 & Maven to run tests using [frontend-maven-plugin](https://github.com/eirslett/frontend-maven-plugin). It is designed to run in CI (BitBucket Pipelines) as the base image for steps that require all of the installed technologies.
 
 Note: this image is required for running Cypress tests from Maven (e.g. when using additional database as a container and an application in background). 
 
