@@ -1,11 +1,14 @@
-FROM cypress/browsers:node16.16.0-chrome107-ff107
+FROM cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
 LABEL maintainer="WebSight Team <https://www.websight.io/>"
 
 ARG MAVEN_VERSION=3.8.6
 ARG MAVEN_DOWNLOAD_SHA512=f790857f3b1f90ae8d16281f902c689e4f136ebe584aba45e4b1fa66c80cba826d3e0e52fdd04ed44b4c66f6d3fe3584a057c26dfcac544a60b301e6d0f91c26
 
+# https://linux.debian.bugs.dist.narkive.com/mPcDlYo6/bug-863199-error-creating-symbolic-link-usr-share-man-man1-rmid-1-gz-dpkg-tmp
+RUN mkdir -p /usr/share/man/man1
+
 RUN apt update \
- && apt -y install openjdk-17-jre openjdk-17-jdk git unzip \
+ && apt -y install openjdk-17-jre openjdk-17-jdk git unzip curl \
  && rm -rf /var/lib/apt/lists/* \
  && apt-get clean
 
