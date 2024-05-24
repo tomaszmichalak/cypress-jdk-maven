@@ -15,22 +15,19 @@ jobs:
 
     steps:
       - 
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
       - 
-        name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
         with:
-          role-to-assume: ${{ secrets.AWS_CI_ROLE_TO_ASSUME }}
-          role-session-name: CypressJdkMavenImageRelease
-          aws-region: us-east-1
-      - 
-        name: Login to Amazon ECR Public
-        id: login-ecr-public
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registry-type: public
+          workload_identity_provider: ${{ secrets.GCP_WEBSIGHT_RELEASES_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_WEBSIGHT_RELEASES_RELEASE_DEPLOY_SA }}
+      -
+        name: Setup docker auth
+        run: gcloud auth configure-docker europe-west1-docker.pkg.dev
       - 
         name: Set up QEMU # https://github.com/docker/buildx/issues/499
         uses: docker/setup-qemu-action@v2
@@ -44,4 +41,4 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: public.ecr.aws/ds/cypress-jdk-maven:${{  github.ref_name }}
+          tags:  europe-west1-docker.pkg.dev/websight-io/websight-docker-releases/cypress-jdk-maven:${{ github.ref_name }}
