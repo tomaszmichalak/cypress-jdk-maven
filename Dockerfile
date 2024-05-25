@@ -1,4 +1,4 @@
-FROM cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
+FROM cypress/browsers:node-16.18.1-chrome-110.0.5481.96-1-ff-109.0-edge-110.0.1587.41-1
 LABEL maintainer="WebSight Team <https://www.websight.io/>"
 
 ARG MAVEN_VERSION=3.8.6
@@ -7,23 +7,18 @@ ARG MAVEN_DOWNLOAD_SHA512=f790857f3b1f90ae8d16281f902c689e4f136ebe584aba45e4b1fa
 # https://linux.debian.bugs.dist.narkive.com/mPcDlYo6/bug-863199-error-creating-symbolic-link-usr-share-man-man1-rmid-1-gz-dpkg-tmp
 RUN mkdir -p /usr/share/man/man1
 
-RUN apt update \
- && apt -y install openjdk-17-jre openjdk-17-jdk git unzip curl \
- && rm -rf /var/lib/apt/lists/* \
- && apt-get clean
+RUN apt --allow-unauthenticated --allow-insecure-repositories update \
+    && apt -y install openjdk-17-jre openjdk-17-jdk git unzip \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 RUN wget https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -P /tmp \
- && echo "${MAVEN_DOWNLOAD_SHA512}  /tmp/apache-maven-${MAVEN_VERSION}-bin.tar.gz" | sha512sum -c - \
- && tar -xvf /tmp/apache-maven-*-bin.tar.gz -C /opt \
- && ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven \
- && rm -rf /tmp/apache-maven-*-bin.tar.gz
+    && echo "${MAVEN_DOWNLOAD_SHA512}  /tmp/apache-maven-${MAVEN_VERSION}-bin.tar.gz" | sha512sum -c - \
+    && tar -xvf /tmp/apache-maven-*-bin.tar.gz -C /opt \
+    && ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven \
+    && rm -rf /tmp/apache-maven-*-bin.tar.gz
 
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV M2_HOME=/opt/maven
 ENV MAVEN_HOME=/opt/maven
 ENV PATH=/opt/maven/bin:${PATH}
-
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip" \
- && unzip /tmp/awscliv2.zip -d /tmp \
- && ./tmp/aws/install \
- && rm -rf /tmp/aws /tmp/awscliv2.zip
